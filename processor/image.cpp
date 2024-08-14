@@ -1,5 +1,7 @@
 #include "image.h"
 #include <istream>
+#include <vector>
+#include "errors/enum.h"
 
 bool Processor::rbyte(int& byte) {
     return (byte = this->image.get()) >= 0;
@@ -13,7 +15,7 @@ bool Processor::rword(int& word) {
     return true;
 }
 
-bool Processor::scan(int& width, int& height) {
+bool Processor::scan_dimensions(int& width, int& height) {
     int marker = 0, dummy = 0;
 
     if ( this->image.get() != 0xFF || this->image.get() != 0xD8 )
@@ -65,10 +67,15 @@ bool Processor::scan(int& width, int& height) {
 }
 
 Processor::Processor(std::istream& image) : image(image) {
-    if (!this->scan(this->width, this->height)) throw
-
+    int w, h;
+    std::vector<uint8_t> d;
+    if (!this->scan_dimensions(w, h)) error::raise(exceptions::SCAN_FAILED);
+    this->width = w;
+    this->height = h;
 }
 
 void Processor::print() {
 
 }
+
+Processor::~Processor() = default;

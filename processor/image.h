@@ -11,12 +11,14 @@ namespace image {
 class Processor {
 private:
     std::istream& image;
-    std::vector<uint8_t> data;
-    std::vector<uint8_t> meta;
+    std::vector<std::vector<uint8_t>> data;
+    // TODO: impl meta declaration
+    // std::vector<uint8_t> meta;
     int width;
     int height;
 public:
-    bool scan(int& image_width, int& image_height);
+    bool scan_dimensions(int& image_width, int& image_height);
+    bool scan_data(std::vector<std::vector<uint8_t>>& data);
     inline bool rbyte(int& byte);
     inline bool rword(int& word);
     Processor(std::istream &image);
@@ -27,3 +29,4 @@ public:
     std::vector<uint8_t> get_data();
     Processor change();
 };
+
