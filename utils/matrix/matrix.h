@@ -15,12 +15,14 @@ private:
     int rows;
     int cols;
 public:
-    Matrix (std::vector<T> data);
+    //default matrix constructor
+    Matrix (int rows, int cols, std::vector<T> data);
+    //matrix full of 'partial_data' values
+    Matrix (int rows, int cols, T partial_data); 
     ~Matrix ();
 
-    int& at(int row, int col);
-    int at(int row, int col) const;
-    int getRows() const;
-    int getCools() const;
+    T at(int row, int col);
+    int getRows();
+    int getCols();
     void print();
 };
