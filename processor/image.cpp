@@ -4,12 +4,12 @@
 #include "errors/enum.h"
 
 bool Processor::rbyte(int& byte) {
-    return (byte = this->image.get()) >= 0;
+    return (byte = this->image->get()) >= 0;
 }
 
 bool Processor::rword(int& word) {
     int cc = 0, dd = 0;
-    if( (cc = this->image.get()) < 0 || (dd = this->image.get()) < 0 )
+    if( (cc = this->image->get()) < 0 || (dd = this->image->get()) < 0 )
         return false;
     word = (cc << 8) + dd;
     return true;
@@ -18,7 +18,7 @@ bool Processor::rword(int& word) {
 bool Processor::scan_dimensions(int& width, int& height) {
     int marker = 0, dummy = 0;
 
-    if ( this->image.get() != 0xFF || this->image.get() != 0xD8 )
+    if ( this->image->get() != 0xFF || this->image->get() != 0xD8 )
         return 0;
 
     while (true){
@@ -66,7 +66,7 @@ bool Processor::scan_dimensions(int& width, int& height) {
     }
 }
 
-Processor::Processor(std::istream& image) : image(image) {
+Processor::Processor(std::istream image) {
     int w, h;
     std::vector<uint8_t> d;
     if (!this->scan_dimensions(w, h)) error::raise(exceptions::SCAN_FAILED);
@@ -74,8 +74,11 @@ Processor::Processor(std::istream& image) : image(image) {
     this->height = h;
 }
 
+Processor::Processor(std::string){}
+
 void Processor::print() {
 
 }
 
 Processor::~Processor() = default;
+
